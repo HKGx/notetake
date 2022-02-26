@@ -5,8 +5,17 @@ import {
   SetStateAction,
   useState,
 } from "react";
-import { uid } from "uid";
 import { INote, PartialINote } from "./App";
+import { v4 as uuid } from "uuid";
+import {
+  Box,
+  Container,
+  IconButton,
+  OutlinedInput,
+  Paper,
+  Stack,
+} from "@mui/material";
+import { Add } from "@mui/icons-material";
 
 export default function NoteForm(props: {
   notes: INote[];
@@ -20,9 +29,10 @@ export default function NoteForm(props: {
     e.preventDefault();
     const fullNote: INote = {
       ...note,
-      id: uid(),
+      date: new Date(),
+      id: uuid(),
     };
-    props.setNotes([...props.notes, fullNote]);
+    props.setNotes([fullNote, ...props.notes]);
     setNote({ title: "", content: "" });
   };
 
@@ -35,20 +45,27 @@ export default function NoteForm(props: {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={note.title}
-        placeholder="Title"
-        onChange={handleTitleChange}
-      />
-      <input
-        type="text"
-        placeholder="Take a note..."
-        value={note.content}
-        onChange={handleContentChange}
-      />
-      <input type="submit" value="Add note" />
-    </form>
+    <Paper sx={{ margin: 2 }}>
+      <form onSubmit={handleSubmit}>
+        <Stack alignItems="center" spacing={2}>
+          <OutlinedInput
+            placeholder="Title"
+            required
+            value={note.title}
+            onChange={handleTitleChange}
+          ></OutlinedInput>
+          <OutlinedInput
+            placeholder="Take a note..."
+            required
+            multiline
+            value={note.content}
+            onChange={handleContentChange}
+          ></OutlinedInput>
+          <IconButton type="submit">
+            <Add />
+          </IconButton>
+        </Stack>
+      </form>
+    </Paper>
   );
 }
