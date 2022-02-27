@@ -54,12 +54,15 @@ function SingleNote({
     return <div>Note not found. Go back!</div>;
   }
   return (
-    <Note
-      note={note}
-      notes={notes}
-      setNotes={setNotes}
-      navigate={navigate}
-    ></Note>
+    <main>
+      <button onClick={() => navigate("/")}>Go home 🏠</button>
+      <Note
+        note={note}
+        notes={notes}
+        setNotes={setNotes}
+        navigate={navigate}
+      ></Note>
+    </main>
   );
 }
 
