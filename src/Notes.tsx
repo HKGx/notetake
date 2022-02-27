@@ -1,4 +1,4 @@
-import { NavigateFunction } from "react-router-dom";
+import { Link, NavigateFunction } from "react-router-dom";
 import { INote, PartialINote } from "./App";
 import Markdown from "marked-react";
 
@@ -82,7 +82,7 @@ export function Note({
   return (
     <div className={wrap ? "note wrap-content" : "note"}>
       <h1 className="title">
-        <a href={singleNoteEndpoint}>{note.title}</a>
+        <Link to={singleNoteEndpoint}>{note.title}</Link>
       </h1>
       <NoteDeleteButton
         noteId={note.id}
