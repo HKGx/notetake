@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/notetake/static/css/main.9950114d.css",
-    "main.js": "/notetake/static/js/main.9184d551.js",
+    "main.js": "/notetake/static/js/main.dbf1b2f4.js",
     "static/js/787.d3a4519c.chunk.js": "/notetake/static/js/787.d3a4519c.chunk.js",
     "index.html": "/notetake/index.html",
     "static/media/react-icon.svg": "/notetake/static/media/react-icon.928f956d9c8ebcffb98a8e917154a81a.svg",
     "main.9950114d.css.map": "/notetake/static/css/main.9950114d.css.map",
-    "main.9184d551.js.map": "/notetake/static/js/main.9184d551.js.map",
+    "main.dbf1b2f4.js.map": "/notetake/static/js/main.dbf1b2f4.js.map",
     "787.d3a4519c.chunk.js.map": "/notetake/static/js/787.d3a4519c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.9950114d.css",
-    "static/js/main.9184d551.js"
+    "static/js/main.dbf1b2f4.js"
   ]
 }
