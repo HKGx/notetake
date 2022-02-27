@@ -7,15 +7,7 @@ import {
 } from "react";
 import { INote, PartialINote } from "./App";
 import { v4 as uuid } from "uuid";
-import { Note, PreviewNote } from "./Notes";
-
-function inflatePartialNote(note: PartialINote): INote {
-  return {
-    ...note,
-    date: new Date(),
-    id: uuid(),
-  };
-}
+import { PreviewNote } from "./Notes";
 
 export default function NoteForm({
   notes,
