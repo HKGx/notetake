@@ -1,5 +1,3 @@
-import { Container, CssBaseline, Stack } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
 import {
   NavigateFunction,
@@ -10,7 +8,8 @@ import {
 } from "react-router-dom";
 import NoteForm from "./NoteForm";
 import Notes, { Note } from "./Notes";
-
+import "./App.css";
+import { ReactComponent as ReactIcon } from "./react-icon.svg";
 export interface INote {
   id: string;
   date: Date;
@@ -29,10 +28,9 @@ function MainPage({
 }) {
   return (
     <main>
-      <Stack spacing={2}>
-        <NoteForm notes={notes} setNotes={setNotes} />
-        <Notes notes={notes} setNotes={setNotes} />
-      </Stack>
+      <NoteForm notes={notes} setNotes={setNotes} />
+      <hr></hr>
+      <Notes notes={notes} setNotes={setNotes} />
     </main>
   );
 }
@@ -85,7 +83,7 @@ function App() {
   const navigate = useNavigate();
 
   return (
-    <Container>
+    <>
       <header>
         <h1>Notetake</h1>
       </header>
@@ -102,11 +100,10 @@ function App() {
         />
       </Routes>
       <footer>
-        <p>
-          Made with love by <a href="https://github.com/HKGx">hkg</a>
-        </p>
+        Made with <ReactIcon className="react-icon" /> by {""}
+        <a href="https://github.com/HKGx">hkg</a>
       </footer>
-    </Container>
+    </>
   );
 }
 

@@ -1,16 +1,6 @@
 import { NavigateFunction } from "react-router-dom";
-import { INote } from "./App";
-import {
-  Button,
-  IconButton,
-  Paper,
-  Stack,
-  Link,
-  ListItem,
-  List,
-  Grid,
-} from "@mui/material";
-import { Delete } from "@mui/icons-material";
+import { INote, PartialINote } from "./App";
+import Markdown from "marked-react";
 
 export type NoteWithStates = {
   note: INote;
@@ -18,9 +8,61 @@ export type NoteWithStates = {
   setNotes: React.Dispatch<React.SetStateAction<INote[]>>;
 };
 
-function deleteNote({ note: toDelete, notes, setNotes }: NoteWithStates) {
-  const newNotes = notes.filter((note) => toDelete.id !== note.id);
+function deleteNote({
+  noteId,
+  notes,
+  setNotes,
+}: {
+  noteId: string;
+  notes: INote[];
+  setNotes: React.Dispatch<React.SetStateAction<INote[]>>;
+}) {
+  const newNotes = notes.filter((note) => noteId !== note.id);
   setNotes(newNotes);
+}
+
+function NoteDeleteButton({
+  noteId,
+  notes,
+  setNotes,
+  navigate,
+}: {
+  noteId: string;
+  notes: INote[];
+  setNotes: React.Dispatch<React.SetStateAction<INote[]>>;
+  navigate?: NavigateFunction;
+}) {
+  const handleClick = () => {
+    deleteNote({ noteId, notes, setNotes });
+    if (navigate) {
+      navigate("/");
+    }
+  };
+  return (
+    <button onClick={handleClick} className="delete">
+      <span role="img" aria-label="delete">
+        🗑️
+      </span>
+    </button>
+  );
+}
+
+export function PreviewNote({ note }: { note: PartialINote }) {
+  return (
+    <div className="note">
+      <h1 className="title">
+        <button type="button" className="link-button">
+          <h1>{note.title}</h1>
+        </button>{" "}
+      </h1>
+      <NoteDeleteButton noteId={""} notes={[]} setNotes={() => {}} />
+      <div className="content">
+        <Markdown gfm value={note.content} />
+      </div>
+      <p className="date">{"A preview date"}</p>
+      <p className="id">{"A preview id"}</p>
+    </div>
+  );
 }
 
 export function Note({
@@ -28,33 +70,32 @@ export function Note({
   notes,
   setNotes,
   navigate,
-}: NoteWithStates & {
+  wrap,
+}: {
+  note: INote;
+  notes: INote[];
+  setNotes: React.Dispatch<React.SetStateAction<INote[]>>;
   navigate?: NavigateFunction;
+  wrap?: boolean;
 }) {
   const singleNoteEndpoint = `/note/${note.id}`;
   return (
-    <Paper>
-      <Stack alignItems="center">
-        <Link href={singleNoteEndpoint}>
-          <h1>{note.title}</h1>
-        </Link>
-
-        <IconButton
-          onClick={() => {
-            deleteNote({ note, notes, setNotes });
-            if (navigate) {
-              navigate("/");
-            }
-          }}
-          color="error"
-        >
-          <Delete />
-        </IconButton>
-        <Paper> {note.content} </Paper>
-
-        {note.date.toLocaleString() + " " + note.id}
-      </Stack>
-    </Paper>
+    <div className={wrap ? "note wrap-content" : "note"}>
+      <h1 className="title">
+        <a href={singleNoteEndpoint}>{note.title}</a>
+      </h1>
+      <NoteDeleteButton
+        noteId={note.id}
+        notes={notes}
+        setNotes={setNotes}
+        navigate={navigate}
+      />
+      <div className="content">
+        <Markdown gfm value={note.content} />
+      </div>
+      <p className="date">{note.date.toLocaleString()}</p>
+      <p className="id">{note.id}</p>
+    </div>
   );
 }
 
@@ -66,8 +107,8 @@ export default function Notes({
   setNotes: React.Dispatch<React.SetStateAction<INote[]>>;
 }) {
   return (
-    <Stack spacing={2}>
-      {notes.map((note) => Note({ note, notes, setNotes }))}
-    </Stack>
+    <div className="notes-container">
+      {notes.map((note) => Note({ note, notes, setNotes, wrap: true }))}
+    </div>
   );
 }

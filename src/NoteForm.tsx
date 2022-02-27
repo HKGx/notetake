@@ -7,17 +7,20 @@ import {
 } from "react";
 import { INote, PartialINote } from "./App";
 import { v4 as uuid } from "uuid";
-import {
-  Box,
-  Container,
-  IconButton,
-  OutlinedInput,
-  Paper,
-  Stack,
-} from "@mui/material";
-import { Add } from "@mui/icons-material";
+import { Note, PreviewNote } from "./Notes";
 
-export default function NoteForm(props: {
+function inflatePartialNote(note: PartialINote): INote {
+  return {
+    ...note,
+    date: new Date(),
+    id: uuid(),
+  };
+}
+
+export default function NoteForm({
+  notes,
+  setNotes,
+}: {
   notes: INote[];
   setNotes: Dispatch<SetStateAction<INote[]>>;
 }) {
@@ -32,7 +35,7 @@ export default function NoteForm(props: {
       date: new Date(),
       id: uuid(),
     };
-    props.setNotes([fullNote, ...props.notes]);
+    setNotes([fullNote, ...notes]);
     setNote({ title: "", content: "" });
   };
 
@@ -40,32 +43,34 @@ export default function NoteForm(props: {
     setNote({ ...note, title: e.target.value });
   };
 
-  const handleContentChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleContentChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     setNote({ ...note, content: e.target.value });
   };
 
   return (
-    <Paper sx={{ margin: 2 }}>
+    <div className="note-form">
       <form onSubmit={handleSubmit}>
-        <Stack alignItems="center" spacing={2}>
-          <OutlinedInput
-            placeholder="Title"
-            required
-            value={note.title}
-            onChange={handleTitleChange}
-          ></OutlinedInput>
-          <OutlinedInput
-            placeholder="Take a note..."
-            required
-            multiline
-            value={note.content}
-            onChange={handleContentChange}
-          ></OutlinedInput>
-          <IconButton type="submit">
-            <Add />
-          </IconButton>
-        </Stack>
+        <input
+          placeholder="Title"
+          required
+          maxLength={26}
+          value={note.title}
+          onChange={handleTitleChange}
+        ></input>
+        <textarea
+          placeholder="Take a note..."
+          required
+          value={note.content}
+          onChange={handleContentChange}
+        ></textarea>
+        <input type="submit" value="Add a note"></input>
       </form>
-    </Paper>
+
+      {(note.title !== "" || note.content !== "") && (
+        <>
+          Preview: <PreviewNote note={note}></PreviewNote>{" "}
+        </>
+      )}
+    </div>
   );
 }
